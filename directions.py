@@ -1,9 +1,10 @@
-from flask import Flask, request, redirect, render_template, url_for
+from flask import Flask, request, redirect, render_template, url_for, flash
 from twilio.rest import Client
-import requests
+import requests, os
 
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 @app.route("/")
 def index():
@@ -21,12 +22,17 @@ def text():
         origin = '9+Nystrom+Trail,Matawan,NJ,USA'
         destination = 'Rutgers–New Brunswick,New Brunswick,NJ,USA'
 
-        url = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + origin + '&destination=' + destination + '&key='
+        to = to.replace(', ', ',').replace(' ', '+')
+        wfrom = wfrom.replace(', ', ',').replace(' ', '+')
+        # print('To: '+to)
+        # print('From: '+wfrom)
+
+
+        url = 'https://maps.googleapis.com/maps/api/directions/json?origin=' + wfrom + '&destination=' + to + '&key='
         full_url = url+API_KEY
         directions_json = requests.get(full_url).json()
         temp = []
-        print(to)
-        print(wfrom)
+
         count = 1
         for i in directions_json['routes'][0]['legs'][0]['steps']:
             directions = (i['html_instructions']).replace("<b>", "").replace("</b>","")
@@ -34,7 +40,7 @@ def text():
             temp.append(str(count) + '. ' + directions + ' for '+ i['distance']['text']+"\n\n")
             count = count + 1
         res = ''.join(temp)
-        print(res)
+        # print(res)
 
         account_sid = "AC58a4d2de362269e533d0255acda5fb81"
         auth_token = "d71831993dca13d138c044f94e374c14"
@@ -45,6 +51,7 @@ def text():
             body=res,
             from_="+17325921530"
         )
+        flash('You\'re directions were sent!')
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
