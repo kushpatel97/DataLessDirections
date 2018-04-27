@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Less Directions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<style>
+
+    body{
+        background-image: url('../static/road3.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+
+    }
+    .center-div {
+        margin: 0 auto;
+        width:80%
+    }
+
+    .txtcolor{
+        color: aliceblue;
+    }
+
+
+</style>
+<body>
+<br>
+<h1 class="center-div txtcolor text-center">Data Less Directions</h1>
+
+<br><br><br>
+<div class="containter center-div">
+    <form action="/sms" method="POST">
+        <div class="form-group">
+            <label class="txtcolor" for="current">Where are you leaving from?</label>
+            <input type="text" class="form-control" id="current" name="whereFrom">
+        </div>
+        <div class="form-group">
+            <label class="txtcolor" for="address">Where would you like to go?</label>
+            <input type="text" class="form-control" id="address" name="whereTo">
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+
+
+<!--<div class="containter center-div">-->
+    <!--<form action = "/sms" method = "POST">-->
+        <!--<p>apple</p><input id="address" class="controls form-control" type="text" name="whereTo"/>-->
+        <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+      <!--</form>-->
+<!--</div>-->
+
+
+
+
+<script>
+
+    function activatePlaces(){
+        var input = document.getElementById('address');
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        var input2 = document.getElementById('current');
+        var autocomplete2 = new google.maps.places.Autocomplete(input2);
+    }
+
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjHPagU_xOomB1gwilES9f1ZFFZAFSwbM&libraries=places&callback=activatePlaces" async defer></script>
+</body>
+</html>
